@@ -38,14 +38,59 @@ CREATE TABLE Tiendas (
 ## Definción de la transacción: 
 Observar que algunas transacciones no tienen definido la operación: [COMMIT tran](https://stackoverflow.com/questions/4896479/what-happens-if-you-dont-commit-a-transaction-to-a-database-say-sql-server?utm_medium=organic&utm_source=google_rich_qa&utm_campaign=google_rich_qa)
 ### Transacción A
-
+```SQL
+GO  
+CREATE PROCEDURE TransacA   
+       
+AS   
+BEGIN TRAN
+    PRINT N'EXEC Transac A'
+    WAITFOR DELAY '00:10:00'
+    EXEC TransacD
+GO 
+```
 ### Transacción B
-
+```SQL
+GO  
+CREATE PROCEDURE TransacB  
+       
+AS   
+BEGIN TRAN
+    PRINT N'EXEC Transac B'
+    EXEC TransacA
+COMMIT TRAN
+GO 
+```
 ### Transacción C
+```SQL
+GO  
+CREATE PROCEDURE TransacC
+       
+AS   
+BEGIN TRAN
+    PRINT N'EXEC Transac C'
+    EXEC TransacB
+COMMIT TRAN
+GO 
+```
+### Transacción D
+```SQL
+GO  
+CREATE PROCEDURE TransacD
+       
+AS   
+BEGIN TRAN
+    PRINT N'EXEC Transac D'
+    EXEC TransacB
+COMMIT TRAN
+GO 
+```
 
 
 ## Uso la forma de delay:
 Se define un delay de 5 a 10 segundos.
+
+
 ```SQL
   WAITFOR DELAY '00:05:00';  
 ```
@@ -69,4 +114,20 @@ Como la aplicación no tiene una transacción en la cual se hace  un commit  o u
 
 
 ## Definición: SQL Query:
+```SQL
+INSERT INTO Tiendas (id,namme) VALUES (1,' T 1');
+INSERT INTO Tiendas (id,namme) VALUES (2' T 2');
+INSERT INTO Tiendas (id,namme) VALUES (3' T 3');
 
+
+INSERT INTO Productos (id,name) VALUES (1,' P 1');
+INSERT INTO Productos (id,namme) VALUES (2' P 2');
+INSERT INTO Productos (id,namme) VALUES (3' P 3');
+
+
+INSERT INTO Empleados (id,name) VALUES (1,' E 1');
+INSERT INTO Empleados (id,namme) VALUES (2' E 2');
+INSERT INTO Empleados (id,namme) VALUES (3' E 3');
+
+
+```
